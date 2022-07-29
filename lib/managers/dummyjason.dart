@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:first_app/constants/app_urls.dart';
 import 'package:first_app/models/recipe.dart';
 import 'package:http/http.dart' as http;
+import '../constants/app_urls.dart';
+
+import '../models/ingredient.dart';
 
 List<Recipe> parseRecipes(String responseBody) {
   final parsed =
@@ -12,12 +15,33 @@ List<Recipe> parseRecipes(String responseBody) {
       .toList();
 }
 
+List<Ingredient> parseIngredients(String responseBody) {
+  final parsed = jsonDecode(responseBody)['extendedIngredients']
+      .cast<Map<String, dynamic>>();
+  return parsed
+      .map<Ingredient>(
+          (json) => Ingredient.fromJson(json as Map<String, dynamic>))
+      .toList();
+}
+
 Future<List<Recipe>> getRecipes() async {
   Uri url = Uri.parse(AppUrls.recipeListURL);
   var response = await http.get(url);
-  print(response.statusCode);
+
   if (response.statusCode == 200) {
     return parseRecipes(response.body);
+  }
+  return [];
+}
+
+Future<List<Ingredient>> getIngredients(String id) async {
+  AppUrls appUrls = AppUrls();
+  String recipeInfoURL = appUrls.getRecipeInfoURL(id);
+  Uri url = Uri.parse(recipeInfoURL);
+  var response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return parseIngredients(response.body);
   }
   return [];
 }

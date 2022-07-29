@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 class RecipeItem extends StatelessWidget {
   final String title;
-  final List<dynamic> ingredients;
+  // final List<dynamic> ingredients;
   final String image;
 
   const RecipeItem({
     required this.title,
-    required this.ingredients,
+    // required this.ingredients,
     required this.image,
   });
 
@@ -65,18 +65,18 @@ class RecipeItem extends StatelessWidget {
                 color: Color.fromARGB(255, 33, 18, 13),
               ),
             ),
-            ListView.builder(
-              itemCount: ingredients.length,
-              itemBuilder: (context, index) {
-                var item = ingredients[index];
+            // ListView.builder(
+            //   itemCount: ingredients.length,
+            //   itemBuilder: (context, index) {
+            //     var item = ingredients[index];
 
-                return ListTile(
-                  title: Text(item),
-                  visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                );
-              },
-              shrinkWrap: true,
-            ),
+            //     return ListTile(
+            //       title: Text(item),
+            //       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+            //     );
+            //   },
+            //   shrinkWrap: true,
+            // ),
           ],
         ),
       ),
