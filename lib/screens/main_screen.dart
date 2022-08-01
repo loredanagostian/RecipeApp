@@ -1,54 +1,90 @@
 import 'package:first_app/managers/dummyjason.dart';
 import 'package:first_app/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
+import '../managers/authentication_manager.dart';
 import '../recipe_item.dart';
+import 'login_screen.dart';
 
 class MainScreen extends StatelessWidget {
   MainScreen({Key? key}) : super(key: key);
-
-  // var recipes = parseRecipes(dummyResponse);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: FutureBuilder(
+      body: SingleChildScrollView(
+        child: FutureBuilder(
           future: getRecipes(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasData) {
               var recipes = snapshot.data;
-              return ListView.builder(
-                itemCount: recipes.length,
-                itemBuilder: (context, index) {
-                  var item = recipes[index];
-                  return GestureDetector(
-                    onTap: () => {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return RecipeDetailScreen(item);
-                          })
+              return Column(
+                children: [
+                  ListView.builder(
+                    itemCount: recipes.length,
+                    itemBuilder: (context, index) {
+                      var item = recipes[index];
+                      return GestureDetector(
+                        onTap: () => {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return RecipeDetailScreen(item);
+                              })
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: RecipeItem(
+                            title: item.title,
+                            image: item.image,
+                          ),
+                        ),
+                      );
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: RecipeItem(
-                        title: item.title,
-                        image: item.image,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15),
+                    child: InkWell(
+                      onTap: () {
+                        AuthenticationManager.signOutUser();
+                        Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginScreen()),
+                            (route) => false);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 255, 117, 108),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Sign me out',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  );
-                },
-                shrinkWrap: true,
+                  ),
+                ],
               );
             } else if (snapshot.connectionState == ConnectionState.waiting)
               return Center(
-                child: CircularProgressIndicator(
-                    color: Color.fromARGB(255, 255, 117, 108)),
+                child: CircularProgressIndicator(),
               );
             else {
               return const Text('Eroare', style: TextStyle(fontSize: 50));
             }
-          }),
+          },
+        ),
+      ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:first_app/managers/authentication_manager.dart';
 import 'package:first_app/screens/main_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool isChecked = false;
+  bool _isChecked = false;
+  String _email = "";
+  String _pass = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 40.0),
                 //email field
                 TextField(
+                  onChanged: (value) {
+                    _email = value;
+                  },
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'Email',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
@@ -79,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 35.0),
                 //password field
                 TextField(
+                  onChanged: (value) {
+                    _pass = value;
+                  },
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -112,10 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Checkbox(
-                      value: isChecked,
+                      value: _isChecked,
                       activeColor: const Color.fromARGB(255, 255, 117, 108),
                       onChanged: (value) {
-                        isChecked = !isChecked;
+                        _isChecked = !_isChecked;
                         setState(() {});
                       },
                     ),
@@ -138,19 +148,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   },
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 33, 18, 13),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Sign me in',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      bool isValid = validateFields();
+                      if (isValid) {
+                        Navigator.pushNamed(context, 'mainRoute');
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 33, 18, 13),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Sign me in',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -204,5 +222,21 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void authenticateUser() {
+    AuthenticationManager authManager = AuthenticationManager();
+    authManager.logInUser(_email, _pass);
+  }
+
+  bool validateFields() {
+    if (_email.isNotEmpty && _pass.isNotEmpty) {
+      authenticateUser();
+      return true;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email and password cannot be blank.')));
+    }
+    return false;
   }
 }

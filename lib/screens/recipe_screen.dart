@@ -8,18 +8,15 @@ class RecipeDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          FutureBuilder(
-            future: getIngredients(recipeModel.id),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasData) {
-                var ingredient = snapshot.data;
-                recipeModel.ingredients = ingredient;
-                return Dialog(
+    return Center(
+      child: FutureBuilder(
+        future: getIngredients(recipeModel.id),
+        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.hasData) {
+            var ingredient = snapshot.data;
+            recipeModel.ingredients = ingredient;
+            return SingleChildScrollView(
+                child: Dialog(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                       side: const BorderSide(
@@ -27,14 +24,6 @@ class RecipeDetailScreen extends StatelessWidget {
                         width: 2,
                       ),
                     ),
-                    // child: SingleChildScrollView(
-                    //   child: FutureBuilder(
-                    //     future: getIngredients(recipeModel.id),
-                    //     builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                    //       if (snapshot.hasData) {
-                    //         var ingredient = snapshot.data;
-                    //         recipeModel.ingredients = ingredient;
-                    // return
                     child: Padding(
                         padding: EdgeInsets.all(20),
                         child: Column(
@@ -63,19 +52,16 @@ class RecipeDetailScreen extends StatelessWidget {
                                 },
                                 shrinkWrap: true,
                               )
-                            ])));
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                      color: Color.fromARGB(255, 33, 18, 13)),
-                );
-              } else {
-                return const Text('Eroare', style: TextStyle(fontSize: 50));
-              }
-            },
-          ),
-        ],
-        // ),
+                            ]))));
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(
+                  color: Color.fromARGB(255, 33, 18, 13)),
+            );
+          } else {
+            return const Text('Eroare', style: TextStyle(fontSize: 50));
+          }
+        },
       ),
     );
   }
