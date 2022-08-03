@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
 import 'package:first_app/screens/main_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,19 +18,23 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isChecked = false;
   String _email = "";
   String _pass = "";
-  final _emailController = TextEditingController();
-  final _passController = TextEditingController();
+  // final _emailController = TextEditingController();
+  // final _passController = TextEditingController();
   bool _obscureText = true;
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  AuthenticationManager _authManager = AuthenticationManager();
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _emailController.dispose();
+  //   _passController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    GoogleSignInAccount? user = _googleSignIn.currentUser;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -63,10 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 40.0),
                 //email field
                 TextField(
-                  controller: _emailController,
-                  // onChanged: (value) {
-                  //   _email = value;
-                  // },
+                  onChanged: (value) {
+                    _email = value;
+                  },
                   decoration: InputDecoration(
                     labelText: 'Email',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -97,10 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 35.0),
                 //password field
                 TextField(
-                  controller: _passController,
-                  // onChanged: (value) {
-                  //   _pass = value;
-                  // },
+                  onChanged: (value) {
+                    _pass = value;
+                  },
                   obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'Password',
@@ -133,39 +139,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 30),
                 InkWell(
-                  onTap: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainScreen(),
-                      ),
-                    ),
+                  onTap: () async {
+                    bool isValid = await validateFields();
+                    if (isValid) {
+                      Navigator.pushNamed(context, 'mainRoute');
+                    }
                   },
-                  child: InkWell(
-                    onTap: () {
-                      bool isValid = validateFields();
-                      if (isValid) {
-                        Navigator.pushNamed(context, 'mainRoute');
-                      }
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 117, 108),
-                        borderRadius: BorderRadius.circular(15),
-                        // border: Border.all(
-                        //   color: Color.fromARGB(255, 33, 18, 13),
-                        //   width: 1.5,
-                        // ),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Sign me in',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 209, 110, 252),
+                      borderRadius: BorderRadius.circular(15),
+                      // border: Border.all(
+                      //   color: Color.fromARGB(255, 33, 18, 13),
+                      //   width: 1.5,
+                      // ),
+                    ),
+                    child: const Center(
+                      child: Text(
+                        'Sign me in',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -174,10 +170,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 30),
                 const Text('Or login with'),
                 const SizedBox(height: 10),
+                //google button
                 IconButton(
                   icon: Image.asset('assets/icons/google.png'),
                   iconSize: 50,
-                  onPressed: () {},
+                  onPressed: () {
+                    final provider = Provider.of<GoogleSignInProvider>(context,
+                        listen: false);
+                    provider.googleLogin().whenComplete(() {
+                      if (user == null) {
+                        signInWithGoogle(context);
+                      }
+                    });
+                  },
                 ),
                 const SizedBox(height: 10),
                 Row(
@@ -221,21 +226,27 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void authenticateUser() {
+  Future<bool> validateFields() async {
     AuthenticationManager authManager = AuthenticationManager();
-    authManager.logInUser(
-        _emailController.text.trim(), _passController.text.trim());
-  }
+    String message = '';
 
-  bool validateFields() {
-    if (_emailController.text.trim().isNotEmpty &&
-        _passController.text.trim().isNotEmpty) {
-      authenticateUser();
-      return true;
+    if (_email.isNotEmpty || _pass.isNotEmpty) {
+      message = await authManager.logInUser(_email, _pass);
+      if (message == '') {
+        return true;
+      } else {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(message)));
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Email and password cannot be blank.')));
+          SnackBar(content: Text('Email or password fields are empty')));
     }
     return false;
+  }
+
+  void signInWithGoogle(BuildContext context) async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MainScreen()));
   }
 }

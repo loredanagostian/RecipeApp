@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "221905601731",
+    "project_id": "meal-app-e1334",
+    "storage_bucket": "meal-app-e1334.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221905601731:android:4f44acbc64d72a1ce54e76",
+        "android_client_info": {
+          "package_name": "com.example.first_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221905601731-mv7g53ndqt4onlpdfce6hij3pqdv9fk8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsT_j9FngAUr5RkQPTLFXm75LVHYef6zg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221905601731-mv7g53ndqt4onlpdfce6hij3pqdv9fk8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 import 'package:first_app/managers/dummyjason.dart';
 import 'package:first_app/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../managers/authentication_manager.dart';
 import '../recipe_item.dart';
 import 'login_screen.dart';
@@ -49,6 +50,7 @@ class MainScreen extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         AuthenticationManager.signOutUser();
+
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
                                 builder: (context) => const LoginScreen()),
