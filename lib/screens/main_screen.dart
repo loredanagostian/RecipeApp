@@ -59,6 +59,10 @@ class MainScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 255, 117, 108),
                           borderRadius: BorderRadius.circular(20),
+                          // border: Border.all(
+                          //   color: Color.fromARGB(255, 33, 18, 13),
+                          //   width: 1.5,
+                          // ),
                         ),
                         child: const Center(
                           child: Text(
@@ -75,11 +79,16 @@ class MainScreen extends StatelessWidget {
                   ),
                 ],
               );
-            } else if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: const Center(
+                  child: CircularProgressIndicator(
+                    color: Color.fromARGB(255, 255, 117, 108),
+                  ),
+                ),
               );
-            else {
+            } else {
               return const Text('Eroare', style: TextStyle(fontSize: 50));
             }
           },

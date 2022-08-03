@@ -28,6 +28,9 @@ Future<List<Recipe>> getRecipes() async {
   Uri url = Uri.parse(AppUrls.recipeListURL);
   var response = await http.get(url);
 
+  print('status code:');
+  print(response.statusCode);
+
   if (response.statusCode == 200) {
     return parseRecipes(response.body);
   }

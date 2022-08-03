@@ -14,6 +14,16 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isChecked = false;
   String _email = "";
   String _pass = "";
+  final _emailController = TextEditingController();
+  final _passController = TextEditingController();
+  bool _obscureText = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +63,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 40.0),
                 //email field
                 TextField(
-                  onChanged: (value) {
-                    _email = value;
-                  },
+                  controller: _emailController,
+                  // onChanged: (value) {
+                  //   _email = value;
+                  // },
                   decoration: InputDecoration(
                     labelText: 'Email',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 33, 18, 13),
+                        color: Color.fromARGB(255, 255, 117, 108),
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -73,29 +84,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset(
-                        'assets/icons/checkbox.png',
-                        height: 25,
-                        fit: BoxFit.fill,
-                      ),
-                    ),
+                    // suffixIcon: Padding(
+                    //   padding: const EdgeInsets.all(20.0),
+                    //   child: Image.asset(
+                    //     'assets/icons/checkbox.png',
+                    //     height: 25,
+                    //     fit: BoxFit.fill,
+                    //   ),
+                    // ),
                   ),
                 ),
                 const SizedBox(height: 35.0),
                 //password field
                 TextField(
-                  onChanged: (value) {
-                    _pass = value;
-                  },
-                  obscureText: true,
+                  controller: _passController,
+                  // onChanged: (value) {
+                  //   _pass = value;
+                  // },
+                  obscureText: _obscureText,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 33, 18, 13),
+                        color: Color.fromARGB(255, 255, 117, 108),
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -107,38 +119,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    suffixIcon: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Image.asset(
-                        'assets/icons/hidden.png',
-                        height: 25,
-                        fit: BoxFit.fill,
-                      ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                      child: Icon(_obscureText
+                          ? Icons.visibility
+                          : Icons.visibility_off),
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      value: _isChecked,
-                      activeColor: const Color.fromARGB(255, 255, 117, 108),
-                      onChanged: (value) {
-                        _isChecked = !_isChecked;
-                        setState(() {});
-                      },
-                    ),
-                    const Text(
-                      'Remember me',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 InkWell(
                   onTap: () => {
                     Navigator.push(
@@ -158,8 +151,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 33, 18, 13),
+                        color: const Color.fromARGB(255, 255, 117, 108),
                         borderRadius: BorderRadius.circular(15),
+                        // border: Border.all(
+                        //   color: Color.fromARGB(255, 33, 18, 13),
+                        //   width: 1.5,
+                        // ),
                       ),
                       child: const Center(
                         child: Text(
@@ -200,16 +197,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
+                        primary: Color.fromARGB(255, 80, 202, 213),
                         shadowColor: Colors.white,
-                        side: const BorderSide(
-                          color: Colors.black,
-                        ),
+                        // side: const BorderSide(
+                        //   color: Colors.black,
+                        // ),
                       ),
                       child: const Text(
                         'Sign Up',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 255, 117, 108),
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -226,11 +223,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void authenticateUser() {
     AuthenticationManager authManager = AuthenticationManager();
-    authManager.logInUser(_email, _pass);
+    authManager.logInUser(
+        _emailController.text.trim(), _passController.text.trim());
   }
 
   bool validateFields() {
-    if (_email.isNotEmpty && _pass.isNotEmpty) {
+    if (_emailController.text.trim().isNotEmpty &&
+        _passController.text.trim().isNotEmpty) {
       authenticateUser();
       return true;
     } else {

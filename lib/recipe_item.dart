@@ -27,7 +27,7 @@ class RecipeItem extends StatelessWidget {
           ),
         ],
         border: Border.all(
-          color: Color.fromARGB(255, 33, 18, 13),
+          color: Color.fromARGB(255, 255, 117, 108),
           width: 1.5,
         ),
         color: Colors.white,
@@ -65,18 +65,6 @@ class RecipeItem extends StatelessWidget {
                 color: Color.fromARGB(255, 33, 18, 13),
               ),
             ),
-            // ListView.builder(
-            //   itemCount: ingredients.length,
-            //   itemBuilder: (context, index) {
-            //     var item = ingredients[index];
-
-            //     return ListTile(
-            //       title: Text(item),
-            //       visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-            //     );
-            //   },
-            //   shrinkWrap: true,
-            // ),
           ],
         ),
       ),
