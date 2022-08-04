@@ -1,9 +1,17 @@
 import 'package:first_app/models/ingredient.dart';
+import 'package:hive/hive.dart';
 
-class Recipe {
+part 'recipe.g.dart';
+
+@HiveType(typeId: 0)
+class Recipe extends HiveObject {
+  @HiveField(0)
   final String id;
+  @HiveField(1)
   final String title;
+  @HiveField(2)
   List<Ingredient> ingredients;
+  @HiveField(3)
   final String image;
 
   Recipe({

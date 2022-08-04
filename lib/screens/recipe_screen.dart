@@ -1,5 +1,6 @@
 import 'package:first_app/managers/dummyjason.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import '../models/recipe.dart';
 
 class RecipeDetailScreen extends StatelessWidget {

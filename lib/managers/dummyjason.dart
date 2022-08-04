@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:first_app/constants/app_urls.dart';
+import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/models/recipe.dart';
 import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../constants/app_urls.dart';
 
 import '../models/ingredient.dart';
@@ -10,9 +12,16 @@ import '../models/ingredient.dart';
 List<Recipe> parseRecipes(String responseBody) {
   final parsed =
       jsonDecode(responseBody)['results'].cast<Map<String, dynamic>>();
-  return parsed
+
+  List<Recipe> recipes = parsed
       .map<Recipe>((json) => Recipe.fromJson(json as Map<String, dynamic>))
       .toList();
+
+  for (var recipe in recipes) {
+    HiveManager.instance.recipeBox.put(recipe.id, recipe);
+  }
+
+  return recipes;
 }
 
 List<Ingredient> parseIngredients(String responseBody) {
@@ -26,14 +35,22 @@ List<Ingredient> parseIngredients(String responseBody) {
 
 Future<List<Recipe>> getRecipes() async {
   Uri url = Uri.parse(AppUrls.recipeListURL);
-  var response = await http.get(url);
+  bool hasInternetConnection = await InternetConnectionChecker().hasConnection;
 
-  print('status code:');
-  print(response.statusCode);
+  if (hasInternetConnection) {
+    var response = await http.get(url);
 
-  if (response.statusCode == 200) {
-    return parseRecipes(response.body);
+    print('status code:');
+    print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      return parseRecipes(response.body);
+    }
+  } else {
+    List<Recipe> listRecipes = HiveManager.instance.recipeBox.values.toList();
+    return listRecipes;
   }
+
   return [];
 }
 

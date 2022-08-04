@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
 import 'package:first_app/screens/main_screen.dart';
@@ -15,21 +14,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  bool _isChecked = false;
   String _email = "";
   String _pass = "";
-  // final _emailController = TextEditingController();
-  // final _passController = TextEditingController();
   bool _obscureText = true;
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-  AuthenticationManager _authManager = AuthenticationManager();
-
-  // @override
-  // void dispose() {
-  //   _emailController.dispose();
-  //   _passController.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,14 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    // suffixIcon: Padding(
-                    //   padding: const EdgeInsets.all(20.0),
-                    //   child: Image.asset(
-                    //     'assets/icons/checkbox.png',
-                    //     height: 25,
-                    //     fit: BoxFit.fill,
-                    //   ),
-                    // ),
                   ),
                 ),
                 const SizedBox(height: 35.0),
