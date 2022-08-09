@@ -5,6 +5,7 @@ import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/models/recipe.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../constants/app_urls.dart';
 
 import '../models/ingredient.dart';
@@ -35,13 +36,11 @@ List<Ingredient> parseIngredients(String responseBody) {
 
 Future<List<Recipe>> getRecipes() async {
   Uri url = Uri.parse(AppUrls.recipeListURL);
-  bool hasInternetConnection = await InternetConnectionChecker().hasConnection;
+  bool hasInternetConnection =
+      await InternetConnectionCheckerPlus().hasConnection;
 
   if (hasInternetConnection) {
     var response = await http.get(url);
-
-    print('status code:');
-    print(response.statusCode);
 
     if (response.statusCode == 200) {
       return parseRecipes(response.body);

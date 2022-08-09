@@ -1,13 +1,12 @@
 import 'package:first_app/managers/dummyjason.dart';
 import 'package:first_app/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../managers/authentication_manager.dart';
 import '../recipe_item.dart';
 import 'login_screen.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class MainScreen extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(15),
+                    padding: const EdgeInsets.all(15),
                     child: InkWell(
                       onTap: () {
                         AuthenticationManager.signOutUser();
@@ -61,10 +60,6 @@ class MainScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: const Color.fromARGB(255, 255, 117, 108),
                           borderRadius: BorderRadius.circular(20),
-                          // border: Border.all(
-                          //   color: Color.fromARGB(255, 33, 18, 13),
-                          //   width: 1.5,
-                          // ),
                         ),
                         child: const Center(
                           child: Text(

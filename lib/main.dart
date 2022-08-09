@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           home: AuthenticationManager().isLoggedIn(sharedPrefs)
-              ? MainScreen()
-              : LoginScreen(),
+              ? const MainScreen()
+              : const LoginScreen(),
           routes: {
-            'loginRoute': (context) => LoginScreen(),
-            'signUpRoute': (context) => SignUpScreen(),
-            'mainRoute': (context) => MainScreen(),
+            'loginRoute': (context) => const LoginScreen(),
+            'signUpRoute': (context) => const SignUpScreen(),
+            'mainRoute': (context) => const MainScreen(),
           },
         ),
       );

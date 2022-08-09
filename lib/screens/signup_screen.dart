@@ -2,8 +2,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:first_app/managers/authentication_manager.dart';
 import 'package:flutter/material.dart';
 
-import 'main_screen.dart';
-
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
 
@@ -142,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: const Color.fromARGB(255, 255, 117, 108),
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(
-                          color: Color.fromARGB(255, 33, 18, 13),
+                          color: const Color.fromARGB(255, 33, 18, 13),
                           width: 1.5,
                         ),
                       ),
@@ -173,10 +171,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   bool validateFields() {
-    print(_email);
-    print(_pass);
-    print(_repeated);
-    print(_email);
     if (_email.isNotEmpty &&
         _pass.isNotEmpty &&
         _repeated.isNotEmpty &&

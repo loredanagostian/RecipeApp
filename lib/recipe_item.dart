@@ -1,4 +1,3 @@
-import 'package:first_app/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
 
 class RecipeItem extends StatelessWidget {
@@ -20,14 +19,14 @@ class RecipeItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 33, 18, 13).withOpacity(0.2),
+            color: const Color.fromARGB(255, 33, 18, 13).withOpacity(0.2),
             spreadRadius: 3,
             blurRadius: 4,
-            offset: Offset(0, 2), // changes position of shadow
+            offset: const Offset(0, 2), // changes position of shadow
           ),
         ],
         border: Border.all(
-          color: Color.fromARGB(255, 255, 117, 108),
+          color: const Color.fromARGB(255, 209, 110, 252),
           width: 1.5,
         ),
         color: Colors.white,
@@ -52,7 +51,7 @@ class RecipeItem extends StatelessWidget {
   Widget rightSide() {
     return Flexible(
       child: Padding(
-        padding: EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.only(left: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

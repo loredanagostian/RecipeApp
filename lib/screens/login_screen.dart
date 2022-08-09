@@ -1,9 +1,14 @@
+import 'dart:math';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
+import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/screens/main_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email = "";
   String _pass = "";
   bool _obscureText = true;
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   Widget build(BuildContext context) {
@@ -128,12 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 209, 110, 252),
+                      color: const Color.fromARGB(255, 209, 110, 252),
                       borderRadius: BorderRadius.circular(15),
-                      // border: Border.all(
-                      //   color: Color.fromARGB(255, 33, 18, 13),
-                      //   width: 1.5,
-                      // ),
                     ),
                     child: const Center(
                       child: Text(
@@ -154,14 +155,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 IconButton(
                   icon: Image.asset('assets/icons/google.png'),
                   iconSize: 50,
-                  onPressed: () {
+                  onPressed: () async {
                     final provider = Provider.of<GoogleSignInProvider>(context,
                         listen: false);
-                    provider.googleLogin().whenComplete(() {
-                      if (user == null) {
-                        signInWithGoogle(context);
+                    try {
+                      // Attempt to sign in the user in with Google
+                      await provider.googleLogin();
+                      signInWithGoogle(context);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'sign_in_canceled') {
+                        return;
                       }
-                    });
+                    }
                   },
                 ),
                 const SizedBox(height: 10),
@@ -177,16 +182,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
+                            builder: (context) => const SignUpScreen(),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 80, 202, 213),
+                        primary: const Color.fromARGB(255, 80, 202, 213),
                         shadowColor: Colors.white,
-                        // side: const BorderSide(
-                        //   color: Colors.black,
-                        // ),
                       ),
                       child: const Text(
                         'Sign Up',
@@ -220,13 +222,14 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Email or password fields are empty')));
+          const SnackBar(content: Text('Email or password fields are empty')));
     }
+
     return false;
   }
 
   void signInWithGoogle(BuildContext context) async {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainScreen()));
+        context, MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 }
