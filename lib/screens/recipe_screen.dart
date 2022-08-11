@@ -1,6 +1,6 @@
 import 'package:first_app/managers/dummyjason.dart';
+import 'package:first_app/recipe_item.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import '../models/recipe.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
@@ -12,6 +12,8 @@ class RecipeDetailScreen extends StatefulWidget {
 }
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
+  // bool _isFav = getFav();
+  bool _isFav = false;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -26,7 +28,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                   side: const BorderSide(
-                    color: Color.fromARGB(255, 209, 110, 252),
+                    color: Color.fromARGB(255, 80, 202, 213),
                     width: 2,
                   ),
                 ),
@@ -61,6 +63,16 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                         ),
                       ),
+                      FloatingActionButton(
+                        onPressed: () {
+                          setState(() {
+                            _isFav = !_isFav;
+                          });
+                        },
+                        backgroundColor: Color.fromARGB(255, 80, 202, 213),
+                        child: Icon(
+                            _isFav ? Icons.favorite : Icons.favorite_border),
+                      )
                     ],
                   ),
                 ),

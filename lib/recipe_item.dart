@@ -1,20 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:first_app/models/recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class RecipeItem extends StatelessWidget {
+class RecipeItem extends StatefulWidget {
   final String title;
-  // final List<dynamic> ingredients;
   final String image;
+  late bool initialValue;
 
-  const RecipeItem({
+  RecipeItem({
     required this.title,
-    // required this.ingredients,
     required this.image,
+    required this.initialValue,
   });
+
+  @override
+  State<RecipeItem> createState() => _RecipeItemState();
+}
+
+class _RecipeItemState extends State<RecipeItem> {
+  CollectionReference recipeCollection =
+      FirebaseFirestore.instance.collection('recipes');
+  late bool isFav;
+
+  @override
+  void initState() {
+    isFav = widget.initialValue;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         boxShadow: [
@@ -32,17 +50,56 @@ class RecipeItem extends StatelessWidget {
         color: Colors.white,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Image.network(
-              image,
+              widget.image,
               fit: BoxFit.fill,
               height: 50,
             ),
           ),
+          const SizedBox(
+            width: 5,
+          ),
           rightSide(),
+          const Spacer(),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                isFav = !isFav;
+                // recipe.toggleFavoriteStatus();
+                if (isFav) {
+                  //add
+                  recipeCollection
+                      .add({'title': widget.title, 'image': widget.image})
+                      .then((value) => print('Recipe added to favorites'))
+                      .catchError(
+                          (error) => print('Failed to add recipe: $error'));
+                } else {
+                  //delete
+                  recipeCollection
+                      .where('title', isEqualTo: widget.title)
+                      .get()
+                      .then((snapshot) =>
+                          snapshot.docs.forEach((querySnapshot) {
+                            for (QueryDocumentSnapshot docSnapshot
+                                in snapshot.docs) {
+                              docSnapshot.reference
+                                  .delete()
+                                  .then((value) =>
+                                      print('Recipe deleted from favorites'))
+                                  .catchError((error) =>
+                                      print('Failed to add recipe: $error'));
+                              ;
+                            }
+                          }));
+                }
+              });
+            },
+            icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
+          ),
         ],
       ),
     );
@@ -57,7 +114,7 @@ class RecipeItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              widget.title,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,

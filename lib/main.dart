@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
 import 'package:first_app/managers/hive_manager.dart';
+import 'package:first_app/screens/favorites.dart';
 import 'package:first_app/screens/main_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
             'loginRoute': (context) => const LoginScreen(),
             'signUpRoute': (context) => const SignUpScreen(),
             'mainRoute': (context) => const MainScreen(),
+            'favoriteRoute': (context) => FavoriteScreen(),
           },
         ),
       );

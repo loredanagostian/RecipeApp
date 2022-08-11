@@ -1,14 +1,10 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
-import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/screens/main_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 40.0),
+
                 //email field
                 TextField(
                   onChanged: (value) {
@@ -72,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 255, 117, 108),
+                        color: Color.fromARGB(255, 80, 202, 213),
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -87,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 35.0),
+
                 //password field
                 TextField(
                   onChanged: (value) {
@@ -98,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                        color: Color.fromARGB(255, 255, 117, 108),
+                        color: Color.fromARGB(255, 80, 202, 213),
                         width: 1.5,
                       ),
                       borderRadius: BorderRadius.circular(15),

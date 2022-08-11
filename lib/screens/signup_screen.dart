@@ -13,6 +13,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String _email = "";
   String _pass = "";
   String _repeated = "";
+  bool _obscureText1 = true;
+  bool _obscureText2 = true;
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -36,6 +39,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 80,
                   ),
                   const SizedBox(height: 40.0),
+
+                  //email
                   TextFormField(
                     onChanged: (value) {
                       setState(() {
@@ -51,7 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 33, 18, 13),
+                          color: Color.fromARGB(255, 80, 202, 213),
                           width: 1.5,
                         ),
                         borderRadius: BorderRadius.circular(15),
@@ -66,6 +71,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   const SizedBox(height: 35.0),
+
+                  //pass
                   TextFormField(
                     onChanged: (value) {
                       setState(() {
@@ -78,13 +85,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                       return null;
                     },
-                    obscureText: true,
+                    obscureText: _obscureText1,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 33, 18, 13),
+                          color: Color.fromARGB(255, 80, 202, 213),
                           width: 1.5,
                         ),
                         borderRadius: BorderRadius.circular(15),
@@ -96,9 +103,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText1 = !_obscureText1;
+                          });
+                        },
+                        child: Icon(_obscureText1
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 35.0),
+
+                  //confirm pass
                   TextFormField(
                     onChanged: (value) {
                       setState(() {
@@ -111,13 +130,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                       return null;
                     },
-                    obscureText: true,
+                    obscureText: _obscureText2,
                     decoration: InputDecoration(
                       labelText: 'Confirm password',
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 33, 18, 13),
+                          color: Color.fromARGB(255, 80, 202, 213),
                           width: 1.5,
                         ),
                         borderRadius: BorderRadius.circular(15),
@@ -129,6 +148,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _obscureText2 = !_obscureText2;
+                          });
+                        },
+                        child: Icon(_obscureText2
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 35),
@@ -137,12 +166,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Container(
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 117, 108),
+                        color: const Color.fromARGB(255, 209, 110, 252),
                         borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: const Color.fromARGB(255, 33, 18, 13),
-                          width: 1.5,
-                        ),
                       ),
                       child: const Center(
                         child: Text(

@@ -38,10 +38,8 @@ Future<List<Recipe>> getRecipes() async {
   Uri url = Uri.parse(AppUrls.recipeListURL);
   bool hasInternetConnection =
       await InternetConnectionCheckerPlus().hasConnection;
-
-  if (hasInternetConnection) {
-    var response = await http.get(url);
-
+  var response = await http.get(url);
+  if (hasInternetConnection && response.statusCode != 402) {
     if (response.statusCode == 200) {
       return parseRecipes(response.body);
     }

@@ -1,4 +1,5 @@
 import 'package:first_app/managers/dummyjason.dart';
+import 'package:first_app/screens/favorites.dart';
 import 'package:first_app/screens/recipe_screen.dart';
 import 'package:flutter/material.dart';
 import '../managers/authentication_manager.dart';
@@ -11,6 +12,25 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 80, 202, 213),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.favorite_border_sharp,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FavoriteScreen(),
+                ),
+              );
+            },
+          )
+        ],
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder(
@@ -37,6 +57,7 @@ class MainScreen extends StatelessWidget {
                           child: RecipeItem(
                             title: item.title,
                             image: item.image,
+                            initialValue: false,
                           ),
                         ),
                       );
