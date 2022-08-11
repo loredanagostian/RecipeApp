@@ -6,8 +6,18 @@ import '../managers/authentication_manager.dart';
 import '../recipe_item.dart';
 import 'login_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +25,21 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 80, 202, 213),
         actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.refresh,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MainScreen()), // this mymainpage is your page to refresh
+                (Route<dynamic> route) => false,
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(
               Icons.favorite_border_sharp,
@@ -28,7 +53,7 @@ class MainScreen extends StatelessWidget {
                 ),
               );
             },
-          )
+          ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -57,7 +82,7 @@ class MainScreen extends StatelessWidget {
                           child: RecipeItem(
                             title: item.title,
                             image: item.image,
-                            initialValue: false,
+                            favVal: item.favValue,
                           ),
                         ),
                       );

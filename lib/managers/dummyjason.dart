@@ -1,16 +1,17 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/constants/app_urls.dart';
 import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/models/recipe.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../constants/app_urls.dart';
 
 import '../models/ingredient.dart';
 
-List<Recipe> parseRecipes(String responseBody) {
+Future<List<Recipe>> parseRecipes(String responseBody) async {
   final parsed =
       jsonDecode(responseBody)['results'].cast<Map<String, dynamic>>();
 
@@ -18,7 +19,21 @@ List<Recipe> parseRecipes(String responseBody) {
       .map<Recipe>((json) => Recipe.fromJson(json as Map<String, dynamic>))
       .toList();
 
+  //check if datas are in firestore
   for (var recipe in recipes) {
+    CollectionReference recipeCollection =
+        FirebaseFirestore.instance.collection('recipes');
+
+    var exist =
+        await recipeCollection.where('title', isEqualTo: recipe.title).get();
+
+    if (exist.docs.isNotEmpty) {
+      recipe.favValue = true;
+    } else {
+      recipe.favValue = false;
+      // print("Doc doesn't exits");
+    }
+
     HiveManager.instance.recipeBox.put(recipe.id, recipe);
   }
 
@@ -45,6 +60,24 @@ Future<List<Recipe>> getRecipes() async {
     }
   } else {
     List<Recipe> listRecipes = HiveManager.instance.recipeBox.values.toList();
+
+    for (var recipe in listRecipes) {
+      CollectionReference recipeCollection =
+          FirebaseFirestore.instance.collection('recipes');
+
+      var exist =
+          await recipeCollection.where('title', isEqualTo: recipe.title).get();
+
+      if (exist.docs.isNotEmpty) {
+        recipe.favValue = true;
+      } else {
+        recipe.favValue = false;
+        // print("Doc doesn't exits");
+      }
+
+      HiveManager.instance.recipeBox.put(recipe.id, recipe);
+    }
+
     return listRecipes;
   }
 

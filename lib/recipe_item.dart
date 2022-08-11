@@ -1,18 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:first_app/models/recipe.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class RecipeItem extends StatefulWidget {
   final String title;
   final String image;
-  late bool initialValue;
+  late bool favVal;
 
   RecipeItem({
+    Key? key,
     required this.title,
     required this.image,
-    required this.initialValue,
-  });
+    required this.favVal,
+  }) : super(key: key);
 
   @override
   State<RecipeItem> createState() => _RecipeItemState();
@@ -25,7 +24,7 @@ class _RecipeItemState extends State<RecipeItem> {
 
   @override
   void initState() {
-    isFav = widget.initialValue;
+    isFav = widget.favVal;
     super.initState();
   }
 
@@ -69,11 +68,14 @@ class _RecipeItemState extends State<RecipeItem> {
             onPressed: () {
               setState(() {
                 isFav = !isFav;
-                // recipe.toggleFavoriteStatus();
                 if (isFav) {
                   //add
                   recipeCollection
-                      .add({'title': widget.title, 'image': widget.image})
+                      .add({
+                        'title': widget.title,
+                        'image': widget.image,
+                        'favValue': true,
+                      })
                       .then((value) => print('Recipe added to favorites'))
                       .catchError(
                           (error) => print('Failed to add recipe: $error'));

@@ -13,12 +13,15 @@ class Recipe extends HiveObject {
   List<Ingredient> ingredients;
   @HiveField(3)
   final String image;
+  @HiveField(4)
+  late bool? favValue;
 
   Recipe({
     required this.id,
     required this.title,
     required this.ingredients,
     required this.image,
+    this.favValue = false,
   });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {

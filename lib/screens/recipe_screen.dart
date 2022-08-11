@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/managers/dummyjason.dart';
-import 'package:first_app/recipe_item.dart';
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 
@@ -12,8 +12,16 @@ class RecipeDetailScreen extends StatefulWidget {
 }
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
-  // bool _isFav = getFav();
-  bool _isFav = false;
+  late bool isFav;
+  CollectionReference recipeCollection =
+      FirebaseFirestore.instance.collection('recipes');
+
+  @override
+  void initState() {
+    isFav = widget.recipeModel.favValue!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -66,12 +74,46 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                       FloatingActionButton(
                         onPressed: () {
                           setState(() {
-                            _isFav = !_isFav;
+                            isFav = !isFav;
+
+                            if (isFav) {
+                              //add
+                              recipeCollection
+                                  .add({
+                                    'title': widget.recipeModel.title,
+                                    'image': widget.recipeModel.image,
+                                    'favValue': true,
+                                  })
+                                  .then((value) =>
+                                      print('Recipe added to favorites'))
+                                  .catchError((error) =>
+                                      print('Failed to add recipe: $error'));
+                            } else {
+                              //delete
+                              recipeCollection
+                                  .where('title',
+                                      isEqualTo: widget.recipeModel.title)
+                                  .get()
+                                  .then((snapshot) =>
+                                      snapshot.docs.forEach((querySnapshot) {
+                                        for (QueryDocumentSnapshot docSnapshot
+                                            in snapshot.docs) {
+                                          docSnapshot.reference
+                                              .delete()
+                                              .then((value) => print(
+                                                  'Recipe deleted from favorites'))
+                                              .catchError((error) => print(
+                                                  'Failed to add recipe: $error'));
+                                          ;
+                                        }
+                                      }));
+                            }
                           });
                         },
-                        backgroundColor: Color.fromARGB(255, 80, 202, 213),
+                        backgroundColor:
+                            const Color.fromARGB(255, 80, 202, 213),
                         child: Icon(
-                            _isFav ? Icons.favorite : Icons.favorite_border),
+                            isFav ? Icons.favorite : Icons.favorite_border),
                       )
                     ],
                   ),

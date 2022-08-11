@@ -11,6 +11,9 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 80, 202, 213),
+      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: StreamBuilder<QuerySnapshot>(
@@ -30,7 +33,7 @@ class FavoriteScreen extends StatelessWidget {
                         child: RecipeItem(
                           title: item['title'],
                           image: item['image'],
-                          initialValue: true,
+                          favVal: item['favValue'],
                         ),
                       );
                     },
