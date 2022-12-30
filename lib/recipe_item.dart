@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 class RecipeItem extends StatefulWidget {
   final String title;
   final String image;
-  late bool favVal;
+  bool favVal;
+  bool isFromFav;
 
   RecipeItem({
     Key? key,
     required this.title,
     required this.image,
     required this.favVal,
+    this.isFromFav = false,
   }) : super(key: key);
 
   @override
@@ -20,13 +22,6 @@ class RecipeItem extends StatefulWidget {
 class _RecipeItemState extends State<RecipeItem> {
   CollectionReference recipeCollection =
       FirebaseFirestore.instance.collection('recipes');
-  late bool isFav;
-
-  @override
-  void initState() {
-    isFav = widget.favVal;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +62,8 @@ class _RecipeItemState extends State<RecipeItem> {
           IconButton(
             onPressed: () {
               setState(() {
-                isFav = !isFav;
-                if (isFav) {
+                widget.favVal = !widget.favVal;
+                if (widget.favVal) {
                   //add
                   recipeCollection
                       .add({
@@ -98,9 +93,10 @@ class _RecipeItemState extends State<RecipeItem> {
                             }
                           }));
                 }
+                setState(() {});
               });
             },
-            icon: Icon(isFav ? Icons.favorite : Icons.favorite_border),
+            icon: Icon(widget.favVal ? Icons.favorite : Icons.favorite_border),
           ),
         ],
       ),

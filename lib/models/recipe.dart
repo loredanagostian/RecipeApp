@@ -14,7 +14,7 @@ class Recipe extends HiveObject {
   @HiveField(3)
   final String image;
   @HiveField(4)
-  late bool? favValue;
+  bool favValue;
 
   Recipe({
     required this.id,
@@ -30,6 +30,7 @@ class Recipe extends HiveObject {
       title: json['title'],
       ingredients: [],
       image: json['image'],
+      favValue: false,
     );
   }
 }

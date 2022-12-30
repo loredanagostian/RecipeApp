@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/managers/dummyjason.dart';
+import 'package:first_app/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 
@@ -12,15 +13,8 @@ class RecipeDetailScreen extends StatefulWidget {
 }
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
-  late bool isFav;
   CollectionReference recipeCollection =
       FirebaseFirestore.instance.collection('recipes');
-
-  @override
-  void initState() {
-    isFav = widget.recipeModel.favValue!;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +68,10 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                       FloatingActionButton(
                         onPressed: () {
                           setState(() {
-                            isFav = !isFav;
+                            widget.recipeModel.favValue =
+                                !widget.recipeModel.favValue;
 
-                            if (isFav) {
+                            if (widget.recipeModel.favValue) {
                               //add
                               recipeCollection
                                   .add({
@@ -108,12 +103,19 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                                         }
                                       }));
                             }
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MainScreen(),
+                              ),
+                            );
                           });
                         },
                         backgroundColor:
                             const Color.fromARGB(255, 80, 202, 213),
-                        child: Icon(
-                            isFav ? Icons.favorite : Icons.favorite_border),
+                        child: Icon(widget.recipeModel.favValue
+                            ? Icons.favorite
+                            : Icons.favorite_border),
                       )
                     ],
                   ),

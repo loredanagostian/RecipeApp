@@ -21,7 +21,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
       title: fields[1] as String,
       ingredients: (fields[2] as List).cast<Ingredient>(),
       image: fields[3] as String,
-      favValue: fields[4] as bool?,
+      favValue: fields[4] as bool,
     );
   }
 

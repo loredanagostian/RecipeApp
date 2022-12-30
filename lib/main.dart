@@ -25,7 +25,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   SharedPreferences sharedPrefs;
-  MyApp({required this.sharedPrefs});
+  MyApp({Key? key, required this.sharedPrefs}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(

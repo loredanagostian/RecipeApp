@@ -23,23 +23,13 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text(
+          "Recipes",
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 80, 202, 213),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.refresh,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        MainScreen()), // this mymainpage is your page to refresh
-                (Route<dynamic> route) => false,
-              );
-            },
-          ),
           IconButton(
             icon: const Icon(
               Icons.favorite_border_sharp,

@@ -1,7 +1,3 @@
-import 'dart:convert';
-
-import 'package:http/http.dart';
-
 class AppUrls {
   static const String apiKey = '22377100b4aa4bd98ddf10ae00401b58';
   static const String recipeListURL =
