@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/managers/dummyjason.dart';
-import 'package:first_app/screens/main_screen.dart';
+import 'package:first_app/screens/recipes_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/recipe.dart';
 

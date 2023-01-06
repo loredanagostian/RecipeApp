@@ -1,9 +1,9 @@
 import 'package:first_app/managers/dummyjason.dart';
-import 'package:first_app/screens/favorites.dart';
-import 'package:first_app/screens/recipe_screen.dart';
+import 'package:first_app/screens/favorite_recipes_screen.dart';
+import 'package:first_app/screens/recipe_dialog_screen.dart';
 import 'package:flutter/material.dart';
 import '../managers/authentication_manager.dart';
-import '../recipe_item.dart';
+import '../widgets/recipe_item_tile.dart';
 import 'login_screen.dart';
 
 class MainScreen extends StatefulWidget {

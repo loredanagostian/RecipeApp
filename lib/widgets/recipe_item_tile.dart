@@ -93,7 +93,6 @@ class _RecipeItemState extends State<RecipeItem> {
                             }
                           }));
                 }
-                setState(() {});
               });
             },
             icon: Icon(widget.favVal ? Icons.favorite : Icons.favorite_border),

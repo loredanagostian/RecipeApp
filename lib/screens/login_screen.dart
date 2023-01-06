@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:first_app/managers/google_manager.dart';
 import 'package:first_app/managers/authentication_manager.dart';
-import 'package:first_app/screens/main_screen.dart';
+import 'package:first_app/screens/recipes_screen.dart';
 import 'package:first_app/screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';

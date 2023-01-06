@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:first_app/screens/main_screen.dart';
+import 'package:first_app/screens/recipes_screen.dart';
 import 'package:flutter/material.dart';
-import '../recipe_item.dart';
+import '../widgets/recipe_item_tile.dart';
 
 class FavoriteScreen extends StatelessWidget {
   FavoriteScreen({Key? key}) : super(key: key);
