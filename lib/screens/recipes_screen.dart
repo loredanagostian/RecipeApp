@@ -28,6 +28,7 @@ class _MainScreenState extends State<MainScreen> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 80, 202, 213),
         actions: <Widget>[
           IconButton(

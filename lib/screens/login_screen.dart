@@ -18,12 +18,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String _email = "";
   String _pass = "";
   bool _obscureText = true;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   Widget build(BuildContext context) {
-    GoogleSignInAccount? user = _googleSignIn.currentUser;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(

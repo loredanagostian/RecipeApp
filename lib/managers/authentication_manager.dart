@@ -4,10 +4,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationManager {
+  static late bool isNew;
+
   Future<String> logInUser(String email, String password) async {
     try {
       final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        isNew = value.additionalUserInfo?.isNewUser ?? false;
+      });
       if (credential.user != null && credential.user!.email != null) {
         HiveManager.instance.userBox.put(credential.user!.uid, credential);
         saveUserData(credential.user!.email!);

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app/constants/app_urls.dart';
+import 'package:first_app/managers/authentication_manager.dart';
 import 'package:first_app/managers/hive_manager.dart';
 import 'package:first_app/models/recipe.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import '../constants/app_urls.dart';
@@ -23,6 +23,22 @@ Future<List<Recipe>> parseRecipes(String responseBody) async {
   for (var recipe in recipes) {
     CollectionReference recipeCollection =
         FirebaseFirestore.instance.collection('recipes');
+
+    if (AuthenticationManager.isNew) {
+      recipeCollection
+          .where('title', isEqualTo: recipe.title)
+          .get()
+          .then((snapshot) => snapshot.docs.forEach((querySnapshot) {
+                for (QueryDocumentSnapshot docSnapshot in snapshot.docs) {
+                  docSnapshot.reference
+                      .delete()
+                      .then((value) => print('Recipe deleted from favorites'))
+                      .catchError(
+                          (error) => print('Failed to add recipe: $error'));
+                  ;
+                }
+              }));
+    }
 
     var exist =
         await recipeCollection.where('title', isEqualTo: recipe.title).get();
